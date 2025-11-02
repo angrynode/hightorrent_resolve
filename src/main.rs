@@ -82,15 +82,9 @@ struct Cli {
     magnet: MagnetFileOrLink,
 }
 
-#[tokio::main(flavor="current_thread")]
-async fn main() -> Result<()> {
-    env_logger::init();
-
-    let args = Cli::parse();
-    log::info!("Searching metadata for magnet {}", args.magnet.hash());
-    
+async fn resolve(magnet: &MagnetLink) -> Result<ListOnlyResponse> {
     let tmpdir = TempDir::new().await?;
-    log::info!("Using tmpdir {}", tmpdir.dir_path().display());
+    log::debug!("Using tmpdir {}", tmpdir.dir_path().display());
     
     let session = Session::new_with_opts(
         tmpdir.dir_path().to_path_buf(),
@@ -100,7 +94,7 @@ async fn main() -> Result<()> {
         }
     ).await?;
     let resp = session.add_torrent(
-        AddTorrent::from_url(args.magnet.deref().to_string()),
+        AddTorrent::from_url(magnet.to_string()),
         Some(AddTorrentOptions {
             list_only: true,
             ..Default::default()
@@ -109,12 +103,24 @@ async fn main() -> Result<()> {
 
     match resp {
         AddTorrentResponse::ListOnly(resp) => {
-            log::info!("Found metainfo for torrent {:?}", resp.info_hash);
+            log::debug!("Found metainfo for torrent {:?}", resp.info_hash);
+            Ok(resp)
         }
         _ => {
             bail!("RQBIT BUG!");
         }
     }
+}
+
+#[tokio::main(flavor="current_thread")]
+async fn main() -> Result<()> {
+    env_logger::init();
+
+    let args = Cli::parse();
+    log::info!("Searching metadata for magnet {}", args.magnet.hash());
+
+    let _resp = resolve(&args.magnet).await;
+    
 
     Ok(())
 }
