@@ -126,6 +126,13 @@ async fn resolve(magnet: &MagnetLink) -> Result<ListOnlyResponse> {
     }
 }
 
+async fn resolve_with_timeout(
+    magnet: &MagnetLink,
+    duration: Duration,
+) -> Option<Result<ListOnlyResponse>> {
+    timeout(duration, resolve(magnet)).await.ok()
+}
+
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<()> {
     env_logger::init();
@@ -133,12 +140,11 @@ async fn main() -> Result<()> {
     let args = Cli::parse();
     log::info!("Searching metadata for magnet {}", args.magnet.hash());
 
-    match timeout(Duration::from_secs(args.timeout), resolve(&args.magnet)).await {
-        Ok(_resp) => {}
-        Err(_timeout) => {
-            log::error!("Timeout.");
-            exit(1);
-        }
+    if let Some(res) = resolve_with_timeout(&args.magnet, Duration::from_secs(args.timeout)).await {
+        let _resp = res?;
+    } else {
+        log::error!("Timeout");
+        exit(1);
     }
 
     Ok(())
