@@ -5,10 +5,13 @@ use async_tempfile::TempDir;
 use clap::Parser;
 use hightorrent::MagnetLink;
 use librqbit::*;
+use tokio::time::timeout;
 
 use std::ops::Deref;
 use std::path::PathBuf;
+use std::process::exit;
 use std::str::FromStr;
+use std::time::Duration;
 
 #[derive(Clone, Debug)]
 pub enum Output {
@@ -85,6 +88,8 @@ impl FromStr for MagnetFileOrLink {
 struct Cli {
     #[arg(short, long, default_value_t=Output::Stdout)]
     output: Output,
+    #[arg(short, long, default_value_t = 30)]
+    timeout: u64,
     magnet: MagnetFileOrLink,
 }
 
@@ -128,7 +133,13 @@ async fn main() -> Result<()> {
     let args = Cli::parse();
     log::info!("Searching metadata for magnet {}", args.magnet.hash());
 
-    let _resp = resolve(&args.magnet).await;
+    match timeout(Duration::from_secs(args.timeout), resolve(&args.magnet)).await {
+        Ok(_resp) => {}
+        Err(_timeout) => {
+            log::error!("Timeout.");
+            exit(1);
+        }
+    }
 
     Ok(())
 }
