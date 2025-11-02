@@ -60,9 +60,6 @@ impl FromStr for MagnetFileOrLink {
 
     fn from_str(s: &str) -> Result<Self> {
         if s.starts_with("magnet:") {
-            // Sanity check
-            // _ = MagnetLink::new(s)?;
-            // return Ok(Self { link: s.to_string() })
             return Ok(Self {
                 link: MagnetLink::new(s)?,
             });
@@ -75,9 +72,6 @@ impl FromStr for MagnetFileOrLink {
 
         let magnet =
             std::fs::read_to_string(path).with_context(|| format!("Failed to read file {s}"))?;
-        // Sanity check
-        // _ = MagnetLink::parse(&magnet)?;
-        // Ok(Self { link: magnet.to_string() })
         Ok(Self {
             link: MagnetLink::new(&magnet)?,
         })
