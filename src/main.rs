@@ -1,8 +1,8 @@
 use anyhow::{bail, Context, Result};
+use async_tempfile::TempDir;
 use clap::Parser;
 use hightorrent::MagnetLink;
 use librqbit::*;
-use temp_dir::TempDir;
 
 use std::ops::Deref;
 use std::path::PathBuf;
@@ -89,11 +89,11 @@ async fn main() -> Result<()> {
     let args = Cli::parse();
     log::info!("Searching metadata for magnet {}", args.magnet.hash());
     
-    let tmpdir = TempDir::new()?;
-    log::info!("Using tmpdir {}", tmpdir.path().display());
+    let tmpdir = TempDir::new().await?;
+    log::info!("Using tmpdir {}", tmpdir.dir_path().display());
     
     let session = Session::new_with_opts(
-        tmpdir.path().to_path_buf(),
+        tmpdir.dir_path().to_path_buf(),
         SessionOptions {
             listen: Some(ListenerOptions::default()),
             ..Default::default()
