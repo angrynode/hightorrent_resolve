@@ -1,4 +1,6 @@
-use anyhow::{bail, Context, Result};
+//! Resolve magnet links to torrents (WIP)
+
+use anyhow::{Context, Result, bail};
 use async_tempfile::TempDir;
 use clap::Parser;
 use hightorrent::MagnetLink;
@@ -44,7 +46,7 @@ pub struct MagnetFileOrLink {
 
 impl Deref for MagnetFileOrLink {
     type Target = MagnetLink;
-    
+
     fn deref(&self) -> &Self::Target {
         &self.link
     }
@@ -58,7 +60,9 @@ impl FromStr for MagnetFileOrLink {
             // Sanity check
             // _ = MagnetLink::new(s)?;
             // return Ok(Self { link: s.to_string() })
-            return Ok(Self { link: MagnetLink::new(s)? });
+            return Ok(Self {
+                link: MagnetLink::new(s)?,
+            });
         }
 
         let path = PathBuf::from(s);
@@ -66,12 +70,14 @@ impl FromStr for MagnetFileOrLink {
             bail!("No such magnet file: {s}");
         }
 
-        let magnet = std::fs::read_to_string(path)
-            .with_context(|| format!("Failed to read file {s}"))?;
+        let magnet =
+            std::fs::read_to_string(path).with_context(|| format!("Failed to read file {s}"))?;
         // Sanity check
         // _ = MagnetLink::parse(&magnet)?;
         // Ok(Self { link: magnet.to_string() })
-        Ok(Self { link: MagnetLink::new(&magnet)? })
+        Ok(Self {
+            link: MagnetLink::new(&magnet)?,
+        })
     }
 }
 
@@ -85,21 +91,24 @@ struct Cli {
 async fn resolve(magnet: &MagnetLink) -> Result<ListOnlyResponse> {
     let tmpdir = TempDir::new().await?;
     log::debug!("Using tmpdir {}", tmpdir.dir_path().display());
-    
+
     let session = Session::new_with_opts(
         tmpdir.dir_path().to_path_buf(),
         SessionOptions {
             listen: Some(ListenerOptions::default()),
             ..Default::default()
-        }
-    ).await?;
-    let resp = session.add_torrent(
-        AddTorrent::from_url(magnet.to_string()),
-        Some(AddTorrentOptions {
-            list_only: true,
-            ..Default::default()
-        })
-    ).await?;
+        },
+    )
+    .await?;
+    let resp = session
+        .add_torrent(
+            AddTorrent::from_url(magnet.to_string()),
+            Some(AddTorrentOptions {
+                list_only: true,
+                ..Default::default()
+            }),
+        )
+        .await?;
 
     match resp {
         AddTorrentResponse::ListOnly(resp) => {
@@ -112,7 +121,7 @@ async fn resolve(magnet: &MagnetLink) -> Result<ListOnlyResponse> {
     }
 }
 
-#[tokio::main(flavor="current_thread")]
+#[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<()> {
     env_logger::init();
 
@@ -120,7 +129,6 @@ async fn main() -> Result<()> {
     log::info!("Searching metadata for magnet {}", args.magnet.hash());
 
     let _resp = resolve(&args.magnet).await;
-    
 
     Ok(())
 }
