@@ -3,6 +3,14 @@ name = "hightorrent_resolve"
 version = "0.1.0"
 edition = "2024"
 
+[lib]
+name = "hightorrent_resolve"
+path = "src/lib.rs"
+
+[[bin]]
+name = "hightorrent_resolve"
+path = "src/main.rs"
+
 [dependencies]
 anyhow = "1.0.100"
 async-tempfile = "0.7.0"
