@@ -85,7 +85,7 @@ struct Cli {
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<()> {
-    env_logger::init();
+    tracing_subscriber::fmt::init();
 
     let args = Cli::parse();
     log::info!("Searching metadata for magnet {}", args.magnet.hash());
