@@ -1,5 +1,3 @@
-//! Resolve magnet links to torrents (WIP)
-
 use anyhow::{Context, Result, bail};
 use clap::Parser;
 use hightorrent::MagnetLink;
