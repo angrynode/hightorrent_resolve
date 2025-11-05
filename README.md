@@ -12,4 +12,10 @@ It is entirely possible to use upstream [librqbit](https://docs.rs/librqbit) dir
 hightorrent_resolve is provided simply as a ease-of-life wrapper around that API, and integrating with
 [hightorrent](https://docs.rs/hightorrent) types directly.
 
+To use as the binary crate, enabling the `cli` feature is required, like so:
+
+```rust
+cargo run --features cli -- --timeout 10 hello.magnet
+```
+
 <!-- cargo-rdme end -->

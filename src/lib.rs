@@ -7,6 +7,12 @@
 //! It is entirely possible to use upstream [librqbit](https://docs.rs/librqbit) directly to perform this operation.
 //! hightorrent_resolve is provided simply as a ease-of-life wrapper around that API, and integrating with
 //! [hightorrent](https://docs.rs/hightorrent) types directly.
+//!
+//! To use as the binary crate, enabling the `cli` feature is required, like so:
+//!
+//! ```ignore
+//! cargo run --features cli -- --timeout 10 hello.magnet
+//! ```
 
 use anyhow::{Result, bail};
 use async_tempfile::TempDir;
