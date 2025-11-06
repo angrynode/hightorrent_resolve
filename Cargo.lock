@@ -336,9 +336,9 @@ dependencies = [
 
 [[package]]
 name = "borrow-or-share"
-version = "0.2.3"
+version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8fa326467c5d528c03e479661320269e7716d6b7d5d49bafd30890ce0c725696"
+checksum = "dc0b364ead1874514c8c2855ab558056ebfeb775653e7ae45ff72f28f8f3166c"
 
 [[package]]
 name = "bstr"
@@ -759,8 +759,9 @@ dependencies = [
 
 [[package]]
 name = "fluent-uri"
-version = "0.3.2"
-source = "git+https://github.com/yescallop/fluent-uri-rs?rev=5ad3b65#5ad3b651fbecb0737b77c00b1790387e4dee0f48"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bc74ac4d8359ae70623506d512209619e5cf8f347124910440dbc221714b328e"
 dependencies = [
  "borrow-or-share",
  "ref-cast",
@@ -1033,7 +1034,7 @@ checksum = "7f24254aa9a54b5c858eaee2f5bccdb46aaf0e486a595ed5fd8f86ba55232a70"
 [[package]]
 name = "hightorrent"
 version = "0.3.2"
-source = "git+https://github.com/angrynode/hightorrent#8618ae71c43f32811f791a4f6fc991dc6145d1ba"
+source = "git+https://github.com/angrynode/hightorrent#f4df806ba295a827efac82446b297d11f3ff811f"
 dependencies = [
  "bt_bencode",
  "fluent-uri",
