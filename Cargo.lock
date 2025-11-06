@@ -1413,6 +1413,7 @@ dependencies = [
 [[package]]
 name = "librqbit"
 version = "9.0.0-beta.1"
+source = "git+https://github.com/ikatson/rqbit?rev=8d99612023355076ca6439c37e88acb35bdd47bb#8d99612023355076ca6439c37e88acb35bdd47bb"
 dependencies = [
  "anyhow",
  "arc-swap",
@@ -1475,6 +1476,7 @@ dependencies = [
 [[package]]
 name = "librqbit-bencode"
 version = "3.1.0"
+source = "git+https://github.com/ikatson/rqbit?rev=8d99612023355076ca6439c37e88acb35bdd47bb#8d99612023355076ca6439c37e88acb35bdd47bb"
 dependencies = [
  "anyhow",
  "arrayvec",
@@ -1489,6 +1491,7 @@ dependencies = [
 [[package]]
 name = "librqbit-buffers"
 version = "4.2.0"
+source = "git+https://github.com/ikatson/rqbit?rev=8d99612023355076ca6439c37e88acb35bdd47bb#8d99612023355076ca6439c37e88acb35bdd47bb"
 dependencies = [
  "bytes",
  "librqbit-clone-to-owned",
@@ -1498,6 +1501,7 @@ dependencies = [
 [[package]]
 name = "librqbit-clone-to-owned"
 version = "3.0.1"
+source = "git+https://github.com/ikatson/rqbit?rev=8d99612023355076ca6439c37e88acb35bdd47bb#8d99612023355076ca6439c37e88acb35bdd47bb"
 dependencies = [
  "bytes",
 ]
@@ -1505,6 +1509,7 @@ dependencies = [
 [[package]]
 name = "librqbit-core"
 version = "5.0.0"
+source = "git+https://github.com/ikatson/rqbit?rev=8d99612023355076ca6439c37e88acb35bdd47bb#8d99612023355076ca6439c37e88acb35bdd47bb"
 dependencies = [
  "anyhow",
  "bytes",
@@ -1532,6 +1537,7 @@ dependencies = [
 [[package]]
 name = "librqbit-dht"
 version = "5.3.0"
+source = "git+https://github.com/ikatson/rqbit?rev=8d99612023355076ca6439c37e88acb35bdd47bb#8d99612023355076ca6439c37e88acb35bdd47bb"
 dependencies = [
  "anyhow",
  "backon",
@@ -1577,6 +1583,7 @@ dependencies = [
 [[package]]
 name = "librqbit-lsd"
 version = "0.1.0"
+source = "git+https://github.com/ikatson/rqbit?rev=8d99612023355076ca6439c37e88acb35bdd47bb#8d99612023355076ca6439c37e88acb35bdd47bb"
 dependencies = [
  "anyhow",
  "atoi",
@@ -1596,6 +1603,7 @@ dependencies = [
 [[package]]
 name = "librqbit-peer-protocol"
 version = "4.3.0"
+source = "git+https://github.com/ikatson/rqbit?rev=8d99612023355076ca6439c37e88acb35bdd47bb#8d99612023355076ca6439c37e88acb35bdd47bb"
 dependencies = [
  "anyhow",
  "bitvec",
@@ -1614,6 +1622,7 @@ dependencies = [
 [[package]]
 name = "librqbit-sha1-wrapper"
 version = "4.1.0"
+source = "git+https://github.com/ikatson/rqbit?rev=8d99612023355076ca6439c37e88acb35bdd47bb#8d99612023355076ca6439c37e88acb35bdd47bb"
 dependencies = [
  "assert_cfg",
  "crypto-hash",
@@ -1622,6 +1631,7 @@ dependencies = [
 [[package]]
 name = "librqbit-tracker-comms"
 version = "3.0.0"
+source = "git+https://github.com/ikatson/rqbit?rev=8d99612023355076ca6439c37e88acb35bdd47bb#8d99612023355076ca6439c37e88acb35bdd47bb"
 dependencies = [
  "anyhow",
  "async-stream",
@@ -1648,6 +1658,7 @@ dependencies = [
 [[package]]
 name = "librqbit-upnp"
 version = "1.0.0"
+source = "git+https://github.com/ikatson/rqbit?rev=8d99612023355076ca6439c37e88acb35bdd47bb#8d99612023355076ca6439c37e88acb35bdd47bb"
 dependencies = [
  "anyhow",
  "bstr",
