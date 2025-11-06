@@ -91,7 +91,13 @@ async fn main() -> Result<()> {
     log::info!("Searching metadata for magnet {}", args.magnet.hash());
 
     if let Some(res) = resolve_with_timeout(&args.magnet, Duration::from_secs(args.timeout)).await {
-        let _resp = res?;
+        let torrent = res?;
+
+        let torrent_bytes = torrent.to_vec();
+        match &args.output {
+            Output::Stdout => unimplemented!(),
+            Output::Path(p) => tokio::fs::write(p, torrent_bytes).await?,
+        }
     } else {
         log::error!("Timeout");
         exit(1);
