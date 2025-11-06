@@ -16,13 +16,13 @@
 
 use anyhow::{Result, bail};
 use async_tempfile::TempDir;
-use hightorrent::MagnetLink;
+use hightorrent::{MagnetLink, TorrentFile};
 use librqbit::*;
 use tokio::time::timeout;
 
 use std::time::Duration;
 
-pub async fn resolve(magnet: &MagnetLink) -> Result<ListOnlyResponse> {
+pub async fn resolve(magnet: &MagnetLink) -> Result<TorrentFile> {
     let tmpdir = TempDir::new().await?;
     log::debug!("Using tmpdir {}", tmpdir.dir_path().display());
 
@@ -47,7 +47,7 @@ pub async fn resolve(magnet: &MagnetLink) -> Result<ListOnlyResponse> {
     match resp {
         AddTorrentResponse::ListOnly(resp) => {
             log::debug!("Found metainfo for torrent {:?}", resp.info_hash);
-            Ok(resp)
+            Ok(TorrentFile::from_slice(&resp.torrent_bytes)?)
         }
         _ => {
             bail!("RQBIT BUG!");
@@ -58,6 +58,6 @@ pub async fn resolve(magnet: &MagnetLink) -> Result<ListOnlyResponse> {
 pub async fn resolve_with_timeout(
     magnet: &MagnetLink,
     duration: Duration,
-) -> Option<Result<ListOnlyResponse>> {
+) -> Option<Result<TorrentFile>> {
     timeout(duration, resolve(magnet)).await.ok()
 }
