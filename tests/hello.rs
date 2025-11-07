@@ -99,7 +99,6 @@ async fn udp_ipv4() {
 // https://github.com/angrynode/hightorrent/issues/23
 #[tokio::test]
 #[cfg(feature = "test_udp")]
-#[ignore]
 async fn udp_ipv6() {
     // Start the seeder and wait or it to be ready, with hard timeout
     let (tx, rx) = oneshot::channel();
@@ -152,7 +151,6 @@ async fn http_ipv4() {
 // https://github.com/angrynode/hightorrent/issues/23
 #[tokio::test]
 #[cfg(feature = "test_http")]
-#[ignore]
 async fn http_ipv6() {
     // Start the seeder and wait or it to be ready, with hard timeout
     let (tx, rx) = oneshot::channel();
