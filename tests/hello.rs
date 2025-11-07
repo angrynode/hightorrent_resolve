@@ -122,3 +122,56 @@ async fn udp_ipv6() {
     // May be a JoinError because the task was aborted, we don't care
     let _ = task_handle.await;
 }
+
+#[tokio::test]
+#[cfg(feature = "test_http")]
+async fn http_ipv4() {
+    // Start the seeder and wait or it to be ready, with hard timeout
+    let (tx, rx) = oneshot::channel();
+    let task_handle = spawn_hello_seeder("tests/hello/hello_http_ipv4.torrent", tx).await;
+    timeout(Duration::from_secs(10), rx).await.unwrap().unwrap();
+
+    // Start new foreground session fetching metainfo
+    let magnet = MagnetLink::new(
+        &tokio::fs::read_to_string("tests/hello/hello_http_ipv4.magnet")
+            .await
+            .unwrap(),
+    )
+    .unwrap();
+    let res = resolve_with_timeout(&magnet, Duration::from_secs(10))
+        .await
+        .unwrap();
+    assert!(res.is_ok());
+
+    task_handle.abort();
+    // May be a JoinError because the task was aborted, we don't care
+    let _ = task_handle.await;
+}
+
+// This test is currently disabled due to parsing of ipv6 literals, see
+// https://github.com/angrynode/hightorrent/issues/23
+#[tokio::test]
+#[cfg(feature = "test_http")]
+#[ignore]
+async fn http_ipv6() {
+    // Start the seeder and wait or it to be ready, with hard timeout
+    let (tx, rx) = oneshot::channel();
+    let task_handle = spawn_hello_seeder("tests/hello/hello_http_ipv6.torrent", tx).await;
+    timeout(Duration::from_secs(10), rx).await.unwrap().unwrap();
+
+    // Start new foreground session fetching metainfo
+    let magnet = MagnetLink::new(
+        &tokio::fs::read_to_string("tests/hello/hello_http_ipv6.magnet")
+            .await
+            .unwrap(),
+    )
+    .unwrap();
+    let res = resolve_with_timeout(&magnet, Duration::from_secs(10))
+        .await
+        .unwrap();
+    assert!(res.is_ok());
+
+    task_handle.abort();
+    // May be a JoinError because the task was aborted, we don't care
+    let _ = task_handle.await;
+}

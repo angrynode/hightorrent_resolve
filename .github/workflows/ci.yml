@@ -50,5 +50,33 @@ jobs:
         with:
           path: aquatic_udp
           key: ${{ runner.os }}-aquatic-udp-github-${{ env.AQUATIC_REVISION }}
-      - run: aquatic_udp -c tests/aquatic-udp-config.toml &
-      - run: cargo +nightly test --features test_udp
+      - name: Restore aquatic-http (rev ${{ env.AQUATIC_REVISION }})
+        id: aquatic-http
+        uses: actions/cache/restore@v4
+        with:
+          path: aquatic_http
+          key: ${{ runner.os }}-aquatic-http-github-${{ env.AQUATIC_REVISION }}
+      - if: ${{ steps.aquatic-http.outputs.cache-hit != 'true' }}
+        name: Download aquatic_http
+        run: git clone https://github.com/greatest-ape/aquatic
+      - if: ${{ steps.aquatic-http.outputs.cache-hit != 'true' }}
+        name: Compile aquatic_http
+        run: cd aquatic && source ./scripts/env-native-cpu-without-avx-512 && cargo build --release -p aquatic_http && cp target/release/aquatic_http .. && cd ..
+      - run: chmod +x aquatic_http
+      - run: sudo ln -s $(pwd)/aquatic_http /usr/local/bin/aquatic_http
+      - if: ${{ steps.aquatic-http.outputs.cache-hit != 'true' }}
+        name: Save aquatic_http
+        uses: actions/cache/save@v4
+        with:
+          path: aquatic_http
+          key: ${{ runner.os }}-aquatic-http-github-${{ env.AQUATIC_REVISION }}
+      - run: aquatic_udp -c tests/aquatic-udp-config.toml &> aquatic_udp.log &
+      - id: test_udp
+        run: cargo +nightly test --features test_udp
+      - run: aquatic_http -c tests/aquatic-http-config.toml &> aquatic_http.log &
+      - id: test_http
+        run: cargo +nightly test --features test_http
+      - run: cat aquatic_udp.log
+        if: ${{ failure() }}
+      - run: cat aquatic_http.log
+        if: ${{ failure() }}
