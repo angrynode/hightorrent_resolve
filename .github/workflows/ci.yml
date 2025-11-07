@@ -50,5 +50,5 @@ jobs:
         with:
           path: aquatic_udp
           key: ${{ runner.os }}-aquatic-udp-github-${{ env.AQUATIC_REVISION }}
-      - run: aquatic_udp --help
-
+      - run: aquatic_udp -c tests/aquatic-udp-config.toml &
+      - run: cargo +nightly test --features test_udp
