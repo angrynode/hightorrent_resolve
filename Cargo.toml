@@ -28,3 +28,4 @@ tracing-subscriber = { version = "0.3.20", optional = true }
 cli = [ "dep:clap", "dep:tracing-subscriber" ]
 test_common = []
 test_udp = [ "test_common" ]
+test_http = [ "test_common" ]
