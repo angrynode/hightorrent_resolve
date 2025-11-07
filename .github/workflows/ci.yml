@@ -13,6 +13,7 @@ on:
       - 'tests/**'
 
 env:
+  AQUATIC_REVISION: "34b45e9"
   CARGO_TERM_COLOR: always
   RUST_BACKTRACE: 1
   RUSTFLAGS: "-Dwarnings"
@@ -28,3 +29,26 @@ jobs:
           components: clippy, rustfmt
       - uses: Swatinem/rust-cache@v2
       - run: ./scripts/pre-commit.sh
+      # Download or compile aquatic-udp            
+      - name: Restore aquatic-udp (rev ${{ env.AQUATIC_REVISION }})
+        id: aquatic-udp
+        uses: actions/cache/restore@v4
+        with:
+          path: aquatic_udp
+          key: ${{ runner.os }}-aquatic-udp-github-${{ env.AQUATIC_REVISION }}
+      - if: ${{ steps.aquatic-udp.outputs.cache-hit != 'true' }}
+        name: Download aquatic_udp
+        run: git clone https://github.com/greatest-ape/aquatic
+      - if: ${{ steps.aquatic-udp.outputs.cache-hit != 'true' }}
+        name: Compile aquatic_udp
+        run: cd aquatic && source ./scripts/env-native-cpu-without-avx-512 && cargo build --release -p aquatic_udp && cp target/release/aquatic_udp .. && cd ..
+      - run: chmod +x aquatic_udp
+      - run: sudo ln -s $(pwd)/aquatic_udp /usr/local/bin/aquatic_udp
+      - if: ${{ steps.aquatic-udp.outputs.cache-hit != 'true' }}
+        name: Save aquatic_udp
+        uses: actions/cache/save@v4
+        with:
+          path: aquatic_udp
+          key: ${{ runner.os }}-aquatic-udp-github-${{ env.AQUATIC_REVISION }}
+      - run: aquatic_udp --help
+
