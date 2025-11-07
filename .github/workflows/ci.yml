@@ -38,7 +38,7 @@ jobs:
           key: ${{ runner.os }}-aquatic-udp-github-${{ env.AQUATIC_REVISION }}
       - if: ${{ steps.aquatic-udp.outputs.cache-hit != 'true' }}
         name: Download aquatic_udp
-        run: git clone https://github.com/greatest-ape/aquatic
+        run: if [ ! -d aquatic ]; then git clone https://github.com/greatest-ape/aquatic; fi
       - if: ${{ steps.aquatic-udp.outputs.cache-hit != 'true' }}
         name: Compile aquatic_udp
         run: cd aquatic && source ./scripts/env-native-cpu-without-avx-512 && cargo build --release -p aquatic_udp && cp target/release/aquatic_udp .. && cd ..
@@ -58,7 +58,7 @@ jobs:
           key: ${{ runner.os }}-aquatic-http-github-${{ env.AQUATIC_REVISION }}
       - if: ${{ steps.aquatic-http.outputs.cache-hit != 'true' }}
         name: Download aquatic_http
-        run: git clone https://github.com/greatest-ape/aquatic
+        run: if [ ! -d aquatic ]; then git clone https://github.com/greatest-ape/aquatic; fi
       - if: ${{ steps.aquatic-http.outputs.cache-hit != 'true' }}
         name: Compile aquatic_http
         run: cd aquatic && source ./scripts/env-native-cpu-without-avx-512 && cargo build --release -p aquatic_http && cp target/release/aquatic_http .. && cd ..
