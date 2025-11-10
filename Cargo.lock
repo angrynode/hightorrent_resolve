@@ -1033,8 +1033,9 @@ checksum = "7f24254aa9a54b5c858eaee2f5bccdb46aaf0e486a595ed5fd8f86ba55232a70"
 
 [[package]]
 name = "hightorrent"
-version = "0.3.2"
-source = "git+https://github.com/angrynode/hightorrent#f4df806ba295a827efac82446b297d11f3ff811f"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "224af163ca2cc8a7e931071877cd38dd8af1da9a4a3efd647b728364f4916339"
 dependencies = [
  "bt_bencode",
  "fluent-uri",

@@ -2,6 +2,13 @@
 name = "hightorrent_resolve"
 version = "0.1.0"
 edition = "2024"
+description = "Resolve magnet links to .torrent files"
+authors = [ "angrynode <angrynode@kl.netlib.re>" ]
+documentation = "https://docs.rs/hightorrent"
+keywords = [ "torrent", "magnet", "bittorrent", "infohash", "tracker" ]
+readme = "README.md"
+license = "AGPL-3.0-only"
+repository = "https://github.com/angrynode/hightorrent_resolve"
 
 [lib]
 name = "hightorrent_resolve"
@@ -16,9 +23,7 @@ required-features = [ "cli" ]
 anyhow = "1.0.100"
 async-tempfile = "0.7.0"
 clap = { version = "4.5.51", features = ["derive"], optional = true }
-# Opting for git until release with MagnetLink: Display
-#hightorrent = "0.3.2"
-hightorrent = { git = "https://github.com/angrynode/hightorrent" }
+hightorrent = "0.4.0"
 librqbit = { git = "https://github.com/ikatson/rqbit", rev = "8d99612023355076ca6439c37e88acb35bdd47bb" }
 log = "0.4.28"
 tokio = { version = "1.48.0", features = ["net", "rt", "macros"] }
