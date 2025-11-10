@@ -85,9 +85,11 @@ async fn udp_ipv4() {
             .unwrap(),
     )
     .unwrap();
-    let res = resolve_with_timeout(&magnet, Duration::from_secs(10))
-        .await
-        .unwrap();
+    let res = resolve_with_timeout(&magnet, Duration::from_secs(10)).await;
+    if res.is_none() {
+        panic!("TIMEOUT!");
+    }
+    let res = res.unwrap();
     assert!(res.is_ok());
 
     task_handle.abort();
@@ -112,9 +114,11 @@ async fn udp_ipv6() {
             .unwrap(),
     )
     .unwrap();
-    let res = resolve_with_timeout(&magnet, Duration::from_secs(10))
-        .await
-        .unwrap();
+    let res = resolve_with_timeout(&magnet, Duration::from_secs(10)).await;
+    if res.is_none() {
+        panic!("TIMEOUT!");
+    }
+    let res = res.unwrap();
     assert!(res.is_ok());
 
     task_handle.abort();
@@ -137,9 +141,11 @@ async fn http_ipv4() {
             .unwrap(),
     )
     .unwrap();
-    let res = resolve_with_timeout(&magnet, Duration::from_secs(10))
-        .await
-        .unwrap();
+    let res = resolve_with_timeout(&magnet, Duration::from_secs(10)).await;
+    if res.is_none() {
+        panic!("TIMEOUT!");
+    }
+    let res = res.unwrap();
     assert!(res.is_ok());
 
     task_handle.abort();
@@ -164,9 +170,11 @@ async fn http_ipv6() {
             .unwrap(),
     )
     .unwrap();
-    let res = resolve_with_timeout(&magnet, Duration::from_secs(10))
-        .await
-        .unwrap();
+    let res = resolve_with_timeout(&magnet, Duration::from_secs(10)).await;
+    if res.is_none() {
+        panic!("TIMEOUT!");
+    }
+    let res = res.unwrap();
     assert!(res.is_ok());
 
     task_handle.abort();
