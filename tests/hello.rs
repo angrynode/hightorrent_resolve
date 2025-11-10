@@ -1,5 +1,5 @@
 #[cfg(feature = "test_common")]
-use hightorrent::MagnetLink;
+use hightorrent::{MagnetLink, TorrentContent};
 #[cfg(feature = "test_common")]
 use hightorrent_resolve::*;
 #[cfg(feature = "test_common")]
@@ -92,6 +92,15 @@ async fn udp_ipv4() {
     let res = res.unwrap();
     assert!(res.is_ok());
 
+    let files = res.unwrap().decoded.files().unwrap();
+    assert_eq!(
+        files,
+        vec!(TorrentContent {
+            path: "hello".into(),
+            size: 5
+        }),
+    );
+
     task_handle.abort();
     // May be a JoinError because the task was aborted, we don't care
     let _ = task_handle.await;
@@ -121,6 +130,15 @@ async fn udp_ipv6() {
     let res = res.unwrap();
     assert!(res.is_ok());
 
+    let files = res.unwrap().decoded.files().unwrap();
+    assert_eq!(
+        files,
+        vec!(TorrentContent {
+            path: "hello".into(),
+            size: 5
+        }),
+    );
+
     task_handle.abort();
     // May be a JoinError because the task was aborted, we don't care
     let _ = task_handle.await;
@@ -147,6 +165,15 @@ async fn http_ipv4() {
     }
     let res = res.unwrap();
     assert!(res.is_ok());
+
+    let files = res.unwrap().decoded.files().unwrap();
+    assert_eq!(
+        files,
+        vec!(TorrentContent {
+            path: "hello".into(),
+            size: 5
+        }),
+    );
 
     task_handle.abort();
     // May be a JoinError because the task was aborted, we don't care
@@ -176,6 +203,15 @@ async fn http_ipv6() {
     }
     let res = res.unwrap();
     assert!(res.is_ok());
+
+    let files = res.unwrap().decoded.files().unwrap();
+    assert_eq!(
+        files,
+        vec!(TorrentContent {
+            path: "hello".into(),
+            size: 5
+        }),
+    );
 
     task_handle.abort();
     // May be a JoinError because the task was aborted, we don't care
